@@ -7,6 +7,7 @@ function App(){
 
   const [currentOperand, setCurrentOperand] = useState("");
   const [previousOperand, setPreviousOperand] = useState("");
+  const [equalCheck, setEqualCheck] = useState(false);
 
   useEffect(() => {
     answer()
@@ -114,10 +115,6 @@ function zeroRemover(s){
 
 
 function equal(){
-  if(previousOperand!=''){
-    setCurrentOperand(previousOperand)
-    // setPreviousOperand('')
-  }
 }
 
 
@@ -212,9 +209,13 @@ function answer(){
   }
 
    try{
-    let ans= eval(current_query)
-    console.log('ans:'+ans)
-    setPreviousOperand(ans)
+    if(equalCheck===true){
+      setPreviousOperand('')
+      setEqualCheck(false)
+    }else{
+      let ans= eval(current_query)
+      setPreviousOperand(ans)
+    }
 
    }catch(error){
     setPreviousOperand("ERROR")
@@ -236,7 +237,10 @@ const clickedButton = (str) => {
       setCurrentOperand(currentOperand.slice(0,currentOperand.length-1))
     }
   }else if(StrInArr(str,['='])){
-    equal()
+    if(previousOperand!=='' && currentOperand!=='' && previousOperand!==undefined &&previousOperand!='ERROR'){
+      setEqualCheck(true)
+      setCurrentOperand(previousOperand)
+    }
   }
 }
 
